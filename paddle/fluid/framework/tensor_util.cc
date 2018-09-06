@@ -87,7 +87,7 @@ void TensorCopy(const Tensor& src, const platform::Place& dst_place,
       }
     }
   }
-#endif
+#endif // PADDLE_WITH_CUDA
 }
 
 void TensorCopy(const Tensor& src, const platform::Place& dst_place,
@@ -134,7 +134,7 @@ void TensorCopySync(const Tensor& src, const platform::Place& dst_place,
     auto dst_gpu_place = boost::get<platform::CUDAPlace>(dst_place);
     memory::Copy(dst_gpu_place, dst_ptr, src_gpu_place, src_ptr, size, nullptr);
   }
-#endif
+#endif // PADDLE_WITH_CUDA
 }
 
 template <typename Predicate, typename DevCtx>
@@ -288,7 +288,7 @@ void TensorToStream(std::ostream& os, const Tensor& tensor,
       }
 #else
       PADDLE_THROW("Unexpected branch");
-#endif
+#endif // PADDLE_WITH_CUDA
     } else {
       os.write(static_cast<const char*>(data_ptr),
                static_cast<std::streamsize>(size));
@@ -348,7 +348,7 @@ void TensorFromStream(std::istream& is, Tensor* tensor,
       framework::TensorCopy(cpu_tensor, dst_place, dev_ctx, tensor);
 #else
       PADDLE_THROW("Unexpected branch");
-#endif
+#endif // PADDLE_WITH_CUDA
     } else {
       framework::VisitDataType(
           desc.data_type(),
